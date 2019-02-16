@@ -1,0 +1,23 @@
+{
+    "name": "smilecc/forum",
+    "description": "",
+    "type": "",
+    "authors": [
+        {
+            "name": "can",
+            "email": "smilexcc@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=7.0.0",
+        "topthink/think-orm": "^1.2",
+        "topthink/think-cache": "^1.0",
+        "smilecc/think-graphql": "dev-master"
+    },
+    "autoload": {
+        "psr-4": {
+            "forum\\": "forum",
+            "plugins\\": "plugins"
+        }
+    }
+}
