@@ -12,7 +12,8 @@
         "php": ">=7.0.0",
         "topthink/think-orm": "^1.2",
         "topthink/think-cache": "^1.0",
-        "smilecc/think-graphql": "dev-master"
+        "smilecc/think-graphql": "dev-master",
+        "nikic/fast-route": "^1.3"
     },
     "autoload": {
         "psr-4": {

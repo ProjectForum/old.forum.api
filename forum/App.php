@@ -5,6 +5,7 @@ use forum\library\Plugin;
 use forum\library\Hook;
 use forum\library\Config;
 use forum\library\GraphQL;
+use forum\library\Router;
 
 class App
 {
@@ -21,11 +22,14 @@ class App
 
         self::hook()->trigger('appInited');
 
-        self::hook()->trigger('beforeGraphRespond');
+        $routePrefix = Config::get('routePrefix', 'graph', '/api/graph');
+        Router::addRoute(['GET', 'POST'], "$routePrefix/{action}", function ($vars) {
+            self::hook()->trigger('beforeGraphRespond');
+            GraphQL::respond($vars['action']);
+            self::hook()->trigger('graphResponded');
+        });
 
-        GraphQL::respond('forum');
-
-        self::hook()->trigger('graphResponded');
+        Router::respond();
     }
 
     /**

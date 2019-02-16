@@ -78,7 +78,7 @@ class GraphQL
      * @param integer $code
      * @return void
      */
-    protected static function jsonResponse($data, $code = 200)
+    public static function jsonResponse($data, $code = 200)
     {
         if (!headers_sent()) {
             http_response_code($code);
