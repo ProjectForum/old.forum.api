@@ -10,6 +10,7 @@ use forum\library\Router;
 class App
 {
     private static $_hook;
+    private static $_plugins = [];
 
     /**
      * 启动应用
@@ -18,17 +19,22 @@ class App
      */
     public static function start()
     {
-        $plugins = Plugin::autoload();
+        // 自动加载所有插件
+        self::$_plugins = Plugin::autoload();
 
+        // 触发 appInited 事件
         self::hook()->trigger('appInited');
 
+        // 初始化路由
         $routePrefix = Config::get('routePrefix', 'graph', '/api/graph');
+        // 注册 GraphQL 路由
         Router::addRoute(['GET', 'POST'], "$routePrefix/{action}", function ($vars) {
             self::hook()->trigger('beforeGraphRespond');
             GraphQL::respond($vars['action']);
             self::hook()->trigger('graphResponded');
         });
 
+        // 执行响应
         Router::respond();
     }
 
@@ -44,6 +50,16 @@ class App
         }
 
         return self::$_hook;
+    }
+
+    /**
+     * 获取所有的插件
+     *
+     * @return array
+     */
+    public static function plugins()
+    {
+        return self::$_plugins;
     }
 
     /**

@@ -36,7 +36,10 @@ class Plugin
                     if (method_exists($pluginInstance, 'start')) {
                         $pluginInstance->start();
                     }
-                    $plugins[] = $pluginInstance;
+                    $plugins[] = [
+                        'info' => method_exists($pluginInstance, 'info') ? $pluginInstance->info() : [],
+                        'instance' => $pluginInstance
+                    ];
                 }
             }
 
