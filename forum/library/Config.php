@@ -15,7 +15,12 @@ class Config
     {
         $configPath = __DIR__ . '/../../config';
         if (!array_key_exists($module, self::$_config)) {
-            self::$_config[$module] = include "{$configPath}/{$module}.php";
+            $filePath = "{$configPath}/{$module}.php";
+            if (file_exists($filePath)) {
+                self::$_config[$module] = include "{$configPath}/{$module}.php";
+            } else {
+                self::$_config[$module] = [];
+            }
         }
 
         return self::$_config[$module];
