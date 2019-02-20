@@ -6,11 +6,14 @@ use forum\library\Hook;
 use forum\library\Config;
 use forum\library\GraphQL;
 use forum\library\Router;
+use forum\user\Session as UserSession;
+use forum\user\Secret as UserSecret;
 
 class App
 {
     private static $_hook;
     private static $_plugins = [];
+    private static $_userSession;
 
     /**
      * 启动应用
@@ -24,6 +27,9 @@ class App
 
         // 触发 appInited 事件
         self::hook()->trigger('appInited');
+
+        // 初始化用户会话
+        self::userSession();
 
         // 初始化路由
         $routePrefix = Config::get('routePrefix', 'graph', '/api/graph');
@@ -50,6 +56,32 @@ class App
         }
 
         return self::$_hook;
+    }
+
+    /**
+     * 获取当前用户的会话
+     *
+     * @return UserSession
+     */
+    public static function userSession() : UserSession
+    {
+        if (empty(self::$_userSession)) {
+            $secretKey = (new UserSecret)->getSecretKey();
+            self::$_userSession = new UserSession($secretKey);
+        }
+
+        return self::$_userSession;
+    }
+
+    /**
+     * 获取应用跟目录的路径
+     *
+     * @param string $extraPath 帮助拼接路径
+     * @return string
+     */
+    public static function getAppPath($extraPath = '') : string
+    {
+        return __DIR__ . '/../' . $extraPath;
     }
 
     /**
