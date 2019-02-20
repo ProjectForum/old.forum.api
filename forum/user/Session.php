@@ -37,6 +37,7 @@ class Session
         } catch (\Exception $e) {
             $this->_payload = null;
         }
+        return $this;
     }
 
     /**
